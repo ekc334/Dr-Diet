@@ -82,6 +82,7 @@ async def allergen_search(allergen, recipe_name):
                     if (ingredient.find(allergen)):
                         present = True
                 if(present):
+                    print((16*(pageNumber-1) + item))
                     allergen_count += 1
     print("allergen count is", allergen_count)
     retval = allergen_count/20    
@@ -90,6 +91,6 @@ async def allergen_search(allergen, recipe_name):
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
         ssl._create_default_https_context = ssl._create_unverified_context
 
-allergens = 'potato'
-rn = "mashed potatoes"
+allergens = 'cheese'
+rn = "macaroni and cheese"
 run_tasks(allergen_search(allergens, rn))
