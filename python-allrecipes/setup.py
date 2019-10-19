@@ -1,0 +1,15 @@
+
+from setuptools import setup
+
+setup(
+	name='python-allrecipes',
+	version='0.2.1',
+	description='Easy-to-use Python API for the allrecipes.com cokking website.',
+	packages=['allrecipes'],
+	url='https://github.com/remaudcorentin-dev/python-allrecipes',
+	author='Corentin Remaud',
+	author_email='remaudcorentin.dev@gmail.com',
+	license='MIT',
+	zip_safe=False,
+	install_requires=['bs4'],
+	)
