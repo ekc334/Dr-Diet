@@ -69,28 +69,27 @@ async def allergen_search(allergen, recipe_name):
     allergen_count = 0
     for pageNumber in range(1,3):
         query_result = await search(query_options, pageNumber)
+        rangeNumber = 0        
         if (pageNumber==1):
-            for item in range(16):
-                print((16*(pageNumber-1))+item)
-                recipe_url = query_result[item]['url']
-                detailed_recipe = await get_recipe(recipe_url)
-                for ingredient in detailed_recipe['ingredients']:
-                    if (ingredient.find(allergen)):
-                        allergen_count += 1
+                rangeNumber = 16
         else:
-            for item in range(4):
-                print((4*(pageNumber-1))+item)
+                rangeNumber = 4
+        for item in range(rangeNumber):
+                present = False
                 recipe_url = query_result[item]['url']
                 detailed_recipe = await get_recipe(recipe_url)
                 for ingredient in detailed_recipe['ingredients']:
                     if (ingredient.find(allergen)):
-                        allergen_count += 1
-
-    return allergen_count
+                        present = True
+                if(present):
+                    allergen_count += 1
+    print("allergen count is", allergen_count)
+    retval = allergen_count/20    
+    return retval
 
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
         ssl._create_default_https_context = ssl._create_unverified_context
 
-allergens = 'peanut'
+allergens = 'potato'
 rn = "mashed potatoes"
-print(run_tasks(allergen_search(allergens, rn)))
+run_tasks(allergen_search(allergens, rn))
