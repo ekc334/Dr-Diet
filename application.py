@@ -1,4 +1,5 @@
 from flask import Flask
+from app import app
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -30,5 +31,5 @@ application.add_url_rule('/<username>', 'hello', (lambda username:
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    application.debug = True
-    application.run()
+    app.debug = True
+    app.run()
