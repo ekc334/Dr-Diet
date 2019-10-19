@@ -1,0 +1,56 @@
+html,body {
+  height: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
+  color: #333333;
+  background: #EEEEEE;
+  font-size: 2.4rem;
+}
+
+
+.invert-color { color: #EEEEEE; }
+.invert-bg { background: #333333; }
+.no-invert-color { color: #333333; }
+.no-invert-bg { background: #EEEEEE; }
+
+div.top-bar {
+  background: #F73D35;
+}
+
+.top-bar-text {
+  padding-top: 125px;
+}
+
+div#top-bar-sm {
+  min-height: 250px;
+}
+
+div.spacing-30 {
+  min-height: 30px;
+}
+
+div.spacing-60 {
+  min-height: 60px;
+}
+
+div.spacing-120 {
+  min-height: 120px;
+}
+
+body {
+  min-height: 100%;
+  font-weight: 400;
+}
+
+.gutter-padding {
+  padding: .5rem 1rem;
+}
+
+
+#footer {
+  bottom: 0;
+  padding-bottom: 2rem;
+}
+
+
+
