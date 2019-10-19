@@ -6,6 +6,5 @@ gunicorn==19.9.0
 itsdangerous==1.1.0
 Jinja2==2.10.3
 MarkupSafe==1.1.1
-python-allrecipes==0.2.1
 soupsieve==1.9.4
 Werkzeug==0.16.0
