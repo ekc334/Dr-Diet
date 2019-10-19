@@ -24,6 +24,7 @@ def parse_catalog_data(soup):
         try:
             data["name"] = article.find("h3", {"class": "fixed-recipe-card__h3"}).get_text().strip(' \t\n\r')
             data["description"] = article.find("div", {"class": "fixed-recipe-card__description"}).get_text().strip(' \t\n\r')
+
             data["url"] = article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/'))['href']
         except Exception as e2:
             pass
