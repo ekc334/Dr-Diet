@@ -67,7 +67,7 @@ async def allergen_search(allergen, recipe_name):
         "sort" : "re"
     }
     allergen_count = 0
-    for pageNumber in range(1,2):
+    for pageNumber in range(1,3):
         query_result = await search(query_options, pageNumber)
         if (pageNumber==1):
             for item in range(16):
