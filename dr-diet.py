@@ -56,30 +56,20 @@ async def get_recipe(session, url):
     print(f"get_recipe url is: {url}")
     async with session.get(url, headers = { 'Cookie':'euConsent=true' }) as resp:
         url_escaped = url.replace("\\", '').replace("/", '').replace(':', '')
-        text = await resp.text()
-        with open(f'data/{url_escaped}.html', 'w') as f:
-            f.write(text.replace('\\n', '\n'))
-
-        soup = BeautifulSoup(text, 'html.parser')
+        soup = BeautifulSoup(await resp.text(), 'html.parser')
         return parse_recipe_data(soup)
-
 
 async def allergen_search(allergen, recipe_name):
     query_options = {
         "wt": recipe_name,
         "sort" : "re"
     }
+
     allergen_count = 0
     total_count = 0
     async with aiohttp.ClientSession() as session:
-        searches = []
-        for n in range(1, 5):
-            searches.append(search(session, query_options, n))
-
-        results = []
-        for result in await asyncio.gather(*searches):
-            results += result
-
+        searches = [search(session, query_options, n) for n in range(1, 5)]
+        results = [i for sublist in await asyncio.gather(*searches) for i in sublist]
         recipe_searches = [get_recipe(session, result['url']) for result in results]
         recipes = await asyncio.gather(*recipe_searches)
 
