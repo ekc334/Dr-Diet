@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+      <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+
+    <!-- Linking our stylesheet -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css" type="text/css" />
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Compiled and minified CSS -->
+<!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ -->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+
+  </head>
+
+  <body>
+
+    <div class="top-bar invert-color header" id="top-bar-sm">
+      <div class="header1">
+        <h3 class="top-bar-text heading">Dr. Al</h3>
+      </div>
+    </div>
+
+    <div class="spacing-120"></div>
+
+    <div class="row justify-content-center gutter-padding">
+      <div class="col-10 text-center"> Hello, I'm Dr. Al, your food safety pal. </div>
+    </div>
+    
+    <div class="row justify-content-center gutter-padding">
+      <div class="col-10 text-center"> I can measure the percentage of allergens in a dish to help you decide whether it's right for you. </div>
+    </div>
+    
+    <br><br><br><br><br><br>
+    
+<!--     <center>
+      <div class="carousel carousel-slider">
+        <a class="carousel-item" href="#one!"><img src="https://www.insideedition.com/sites/default/files/styles/931x523/public/images/2019-01/010319-fish-1280x720.jpg?h=c673cd1c&itok=uKsboidc"></a>
+        <a class="carousel-item" href="#two!"><img src="https://learntruehealth.com/wp-content/uploads/Eliminating-Wheat-And-Grains-For-Better-Health.png"></a>
+        <a class="carousel-item" href="#three!"><img src="https://www.medicalnewstoday.com/content/images/articles/323/323073/dairy-products.jpg"></a>
+      </div>
+    </center> -->
+    
+    <br><br>
+    
+     <div class = "main-container">
+        <form method="get">
+        <!-- need to change action -->
+            
+            <div align="center" class="labelAndButton">
+                <label id = "fourth" class="questions">To start, please enter your dish:</label>
+                    <div><input id = "first" type="text" name="age" value="" required/></div> 
+            </div>
+          
+            <br><br>
+          
+            <div align="center" class="labelAndButton">
+                <label id = "third" class="questions">What is your allergy?</label>
+                    <div><input id = "second" type="text" name="nickname" value="" required/></div> 
+            </div>
+          
+          <br><br><br>
+          
+				
+          <center><!--<input class="submitButton btn-floating" type="submit" value="Submit">-->
+             <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+  
+          </center>
+          
+          <br><br>
+        
+        </form>
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- Compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
+        <script>
+          $('.carousel.carousel-slider').carousel({
+          fullWidth: true
+          });
+        </script>
+  
+  </body>
+</html>
