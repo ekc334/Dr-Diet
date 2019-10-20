@@ -56,7 +56,7 @@ async def get_recipe(session, url):
         soup = BeautifulSoup(await resp.text(), 'html.parser')
         return parse_recipe_data(soup)
 
-async def allergen_search(allergen, recipe_name):
+async def _allergen_search(allergen, recipe_name):
     query_options = {
         "wt": recipe_name,
         "sort" : "re"
@@ -84,6 +84,14 @@ async def allergen_search(allergen, recipe_name):
 
 async def print_async(boi):
     print(await boi)
+
+def allergen_search(allergen, recipe_name):
+    try:
+        loop = asyncio.get_event_loop()
+    except:
+        loop = asyncio.new_event_loop()
+
+    return loop.run_until_complete(_allergen_search(allergen, recipe_name))
 
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
         ssl._create_default_https_context = ssl._create_unverified_context
