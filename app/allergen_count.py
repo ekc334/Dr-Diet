@@ -86,6 +86,8 @@ async def print_async(boi):
     print(await boi)
 
 def allergen_search(allergen, recipe_name):
+    if allergen is None or recipe_name is None:
+        return ""
     try:
         loop = asyncio.get_event_loop()
     except:
