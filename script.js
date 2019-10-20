@@ -9,16 +9,13 @@ $("form").on('submit', function (e) {
   //     alert(text);
   //   });
   // });
-  $.ajax({    
+  $.ajax({
     type: 'GET',
     url: url, //- action form
-    data: {allergenName:allergy,dishName:dish},
+    data: {allergenName:allergy, dishName:dish},
     dataType: "jsonp",
-    success: function(){
-      alert('success');
-    },
-    failure: function() {
-      alert('fail')
+    success: function(response){
+      alert(response);
     }
   });
   //stop form submission
