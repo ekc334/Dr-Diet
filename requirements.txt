@@ -5,6 +5,7 @@ async-timeout==3.0.1
 attrs==19.3.0
 beautifulsoup4==4.8.1
 boundio==0.0.2
+brotlipy==0.7.0
 bs4==0.0.1
 cchardet==2.1.4
 certifi==2019.9.11

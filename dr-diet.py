@@ -41,7 +41,7 @@ def parse_recipe_data(soup):
     ingredients = [i.get_text() for i in ingredients]
     return [i for i in ingredients if i and i != "Add all ingredients to list"]
 
-async def search(query_dict, k):
+def search(query_dict, k):
     url = base_url + urllib.parse.urlencode(query_dict) + "&page="+str(k)
 
     response = requests.get(url, headers={ 'Cookie':'euConsent=true' })
@@ -50,7 +50,7 @@ async def search(query_dict, k):
 
     return parse_catalog_data(soup)
 
-async def get_recipe(url):
+def get_recipe(url):
     response = requests.get(url, headers={ 'Cookie':'euConsent=true' })
 
     url_escaped = url.replace("\\", '').replace("/", '').replace(':', '')
@@ -61,7 +61,7 @@ async def get_recipe(url):
     return parse_recipe_data(soup)
 
 
-async def allergen_search(allergen, recipe_name):
+def allergen_search(allergen, recipe_name):
     query_options = {
         "wt": recipe_name,
         "sort" : "re"
@@ -69,13 +69,13 @@ async def allergen_search(allergen, recipe_name):
     allergen_count = 0
     total_count = 0
     for pageNumber in range(1,3):
-        query_result = await search(query_options, pageNumber)
+        query_result = search(query_options, pageNumber)
 
         for result in query_result:
             present = False
             recipe_url = result['url']
             print(recipe_url)
-            detailed_recipe = await get_recipe(recipe_url)
+            detailed_recipe = get_recipe(recipe_url)
 
             total_count += 1
             if detailed_recipe:
@@ -94,4 +94,4 @@ if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unveri
 
 allergens = 'cheese'
 rn = "grilled cheese sandwich"
-print(run_tasks(allergen_search(allergens, rn)))
+print(allergen_search(allergens, rn))
