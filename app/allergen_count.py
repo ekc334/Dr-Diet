@@ -1,22 +1,18 @@
 import ssl, os
 import asyncio
-
 from bs4 import BeautifulSoup
-
 from boundio import run_tasks
-
 import urllib.parse
 import urllib.request
 import aiohttp
-
 import requests
-
 import re
-
 from flask import Flask
 
 
 base_url = "https://allrecipes.com/search/results/?"
+find_recipe_url = re.compile('^https://www.allrecipes.com/recipe/')
+MINIMUM_RESULT_SIZE = 30
 
 def parse_catalog_data(soup):
     search_data = []
@@ -25,15 +21,11 @@ def parse_catalog_data(soup):
     iterarticles = iter(articles)
     next(iterarticles)
     for article in iterarticles:
-        try:
-            search_data.append({
-                "name": article.find("h3", {"class": "fixed-recipe-card__h3"}).get_text(),
-                "description": article.find("div", {"class": "fixed-recipe-card__description"}).get_text().strip(' \t\n\r'),
-
-                "url": article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/'))['href']
-            })
-        except Exception as e2:
-            pass
+        search_data.append({
+            "name": article.find("h3", {"class": "fixed-recipe-card__h3"}).get_text(),
+            "description": article.find("div", {"class": "fixed-recipe-card__description"}).get_text().strip(),
+            "url": article.find("a", href=find_recipe_url)['href']
+        })
     return search_data
 
 def parse_recipe_data(soup):
@@ -50,40 +42,40 @@ async def search(session, query_dict, k):
     return parse_catalog_data(soup)
 
 async def get_recipe(session, url):
-    print(f"get_recipe url is: {url}")
+    url_shortened = url.replace('https://www.allrecipes.com/recipe/','')
+    # print(f"get_recipe url is: {url_shortened}")
     async with session.get(url, headers = { 'Cookie':'euConsent=true' }) as resp:
-        url_escaped = url.replace("\\", '').replace("/", '').replace(':', '')
         soup = BeautifulSoup(await resp.text(), 'html.parser')
         return parse_recipe_data(soup)
 
 async def _allergen_search(allergen, recipe_name):
-    query_options = {
-        "wt": recipe_name,
-        "sort" : "re"
-    }
+    print("Allergen search called")
+    query_options = { "wt": recipe_name, "sort" : "re" }
 
-    allergen_count = 0
-    total_count = 0
     async with aiohttp.ClientSession() as session:
-        searches = [search(session, query_options, n) for n in range(1, 5)]
+        searches = [search(session, query_options, n) for n in range(1, 4)]
         results = [i for sublist in await asyncio.gather(*searches) for i in sublist]
         recipe_searches = [get_recipe(session, result['url']) for result in results]
-        recipes = await asyncio.gather(*recipe_searches)
 
-        for detailed_recipe in recipes:
-            present = False
-            total_count += 1
-            for ingredient in detailed_recipe:
-                 present = present or allergen in ingredient
-            if present:
+        recipes, pending = await asyncio.wait(recipe_searches, return_when=asyncio.FIRST_COMPLETED)
+
+        while pending and len(recipes) < MINIMUM_RESULT_SIZE:
+            cur_done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
+            recipes |= cur_done
+
+        total_count = len(recipes)
+        allergen_count = 0
+
+        for recipe in recipes:
+            for ingredient in recipe:
+                if allergen.lower() in ingredient.lower():
+                     break
+            else:
                 allergen_count += 1
 
     print("allergen count is", allergen_count)
     retval = int(allergen_count/total_count*100)
     return retval
-
-async def print_async(boi):
-    print(await boi)
 
 def allergen_search(allergen, recipe_name):
     if allergen is None or recipe_name is None:
@@ -96,4 +88,4 @@ def allergen_search(allergen, recipe_name):
     return loop.run_until_complete(_allergen_search(allergen, recipe_name))
 
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
-        ssl._create_default_https_context = ssl._create_unverified_context
+    ssl._create_default_https_context = ssl._create_unverified_context
