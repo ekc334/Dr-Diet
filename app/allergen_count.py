@@ -13,6 +13,9 @@ import requests
 
 import re
 
+from flask import Flask
+
+
 base_url = "https://allrecipes.com/search/results/?"
 
 def parse_catalog_data(soup):
@@ -76,7 +79,7 @@ async def allergen_search(allergen, recipe_name):
                 allergen_count += 1
 
     print("allergen count is", allergen_count)
-    retval = allergen_count/total_count
+    retval = int(allergen_count/total_count*100)
     return retval
 
 async def print_async(boi):
@@ -84,8 +87,3 @@ async def print_async(boi):
 
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
         ssl._create_default_https_context = ssl._create_unverified_context
-
-allergens = 'cheese'
-rn = "grilled cheese sandwich"
-
-print(run_tasks(print_async(allergen_search(allergens, rn))))
