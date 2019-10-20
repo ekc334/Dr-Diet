@@ -53,7 +53,7 @@ async def _allergen_search(allergen, recipe_name):
     query_options = { "wt": recipe_name, "sort" : "re" }
 
     async with aiohttp.ClientSession() as session:
-        searches = [search(session, query_options, n) for n in range(1, 4)]
+        searches = [search(session, query_options, n) for n in range(1, 2)]
         results = [i for sublist in await asyncio.gather(*searches) for i in sublist]
         recipe_searches = [get_recipe(session, result['url']) for result in results]
 
