@@ -1,1 +1,2 @@
-
+exclude: [env, app]
+baseurl: /Dr-Diet

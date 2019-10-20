@@ -53,7 +53,7 @@ async def _allergen_search(allergen, recipe_name):
     query_options = { "wt": recipe_name, "sort" : "re" }
 
     async with aiohttp.ClientSession() as session:
-        searches = [search(session, query_options, n) for n in range(1, 2)]
+        searches = [search(session, query_options, n) for n in range(1, 4)]
         results = [i for sublist in await asyncio.gather(*searches) for i in sublist]
         recipe_searches = [get_recipe(session, result['url']) for result in results]
 
@@ -63,16 +63,21 @@ async def _allergen_search(allergen, recipe_name):
             cur_done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
             recipes |= cur_done
 
-        total_count = len(recipes)
-        allergen_count = 0
+        allergen_count = total_count = len(recipes)
 
         for recipe in recipes:
-            for ingredient in recipe:
-                if allergen.lower() in ingredient.lower():
-                     break
-            else:
-                allergen_count += 1
 
+            if not recipe.result():
+                print("Recipe was empty:", recipe)
+
+            for ingredient in recipe.result():
+                if allergen.lower() in ingredient.lower():
+                    break
+            else:
+                allergen_count -= 1
+                print("Recipe did not contain allergen:", recipe.result())
+
+    print("total count is", total_count)
     print("allergen count is", allergen_count)
     retval = int(allergen_count/total_count*100)
     return retval
