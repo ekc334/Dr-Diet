@@ -20,21 +20,17 @@ def parse_catalog_data(soup):
     articles = soup.findAll("article", {"class": "fixed-recipe-card"})
 
     iterarticles = iter(articles)
-    try:
-        next(iterarticles)
-    except:
-        return
+    next(iterarticles)
     for article in iterarticles:
-        data = {}
         try:
-            data["name"] = article.find("h3", {"class": "fixed-recipe-card__h3"}).get_text()
-            data["description"] = article.find("div", {"class": "fixed-recipe-card__description"}).get_text().strip(' \t\n\r')
+            search_data.append({
+                "name": article.find("h3", {"class": "fixed-recipe-card__h3"}).get_text(),
+                "description": article.find("div", {"class": "fixed-recipe-card__description"}).get_text().strip(' \t\n\r'),
 
-            data["url"] = article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/'))['href']
+                "url": article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/'))['href']
+            })
         except Exception as e2:
             pass
-        if data:  # Do not include if no image -> its probably an add or something you do not want in your result
-            search_data.append(data)
     return search_data
 
 def parse_recipe_data(soup):
@@ -45,10 +41,8 @@ def parse_recipe_data(soup):
 
 async def search(session, query_dict, k):
     url = base_url + urllib.parse.urlencode(query_dict) + "&page="+str(k)
-
     async with session.get(url, headers = { 'Cookie':'euConsent=true' }) as resp:
         text = await resp.text()
-
     soup = BeautifulSoup(text, 'html.parser')
     return parse_catalog_data(soup)
 
@@ -76,13 +70,11 @@ async def allergen_search(allergen, recipe_name):
         for detailed_recipe in recipes:
             present = False
             total_count += 1
-            if detailed_recipe:
-                for ingredient in detailed_recipe:
-                     present = present or allergen in ingredient
-                if(present):
-                    print(f"ITEM NO.: {total_count}")
-                    allergen_count += 1
-                    print(f"ALLERGEN COUNT: {allergen_count}")
+            for ingredient in detailed_recipe:
+                 present = present or allergen in ingredient
+            if present:
+                allergen_count += 1
+
     print("allergen count is", allergen_count)
     retval = allergen_count/total_count
     return retval
