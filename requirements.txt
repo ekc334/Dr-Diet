@@ -8,7 +8,7 @@ boundio==0.0.2
 brotlipy==0.7.0
 bs4==0.0.1
 cchardet==2.1.4
-certifi==2019.9.11
+certifi==2022.12.7
 cffi==1.13.0
 chardet==3.0.4
 Click==7.0
